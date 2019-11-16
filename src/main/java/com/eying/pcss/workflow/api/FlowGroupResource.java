@@ -33,18 +33,18 @@ public class FlowGroupResource extends AbstractResource {
     @Path("/getGroupList")
     @ApiOperation("查询流程分组列表")
     public List<FlowGroup> getGroups(
-            @QueryParam("companyId")String companyId
-    ){
-        return flowGroupService.findAll(companyId);
+            @QueryParam("companyId") String companyId
+    ) {
+        return flowGroupService.findAll (companyId);
     }
 
     @GET
     @Path("/getFlowGroup")
     @ApiOperation("查询应用分组详情")
     public FlowGroup getFlowGroup(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        return flowGroupService.getFlowGroup(id);
+        return flowGroupService.getFlowGroup (id);
     }
 
     @GET
@@ -52,10 +52,10 @@ public class FlowGroupResource extends AbstractResource {
     @ApiOperation("创建流程分组")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response createGroup(
-            @QueryParam("name")String name,
-            @QueryParam("companyId")String companyId
-    ){
-        return this.successCreate(flowGroupService.saveFlowGroup(name,companyId));
+            @QueryParam("name") String name,
+            @QueryParam("companyId") String companyId
+    ) {
+        return this.successCreate (flowGroupService.saveFlowGroup (name, companyId));
     }
 
     @GET
@@ -63,20 +63,20 @@ public class FlowGroupResource extends AbstractResource {
     @ApiOperation("修改流程分组名称")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response modifyGroupName(
-            @QueryParam("id") String id,
-            @QueryParam("name")String name
-    ){
-         flowGroupService.modifyGroupName(id,name);
-         return this.successUpdate();
+            @QueryParam("id") Long id,
+            @QueryParam("name") String name
+    ) {
+        flowGroupService.modifyGroupName (id, name);
+        return this.successUpdate ();
     }
 
     @GET
     @Path("/deleteFlowGroup")
     @ApiOperation("删除应用分组")
     public Response deleteFlowGroup(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        flowGroupService.deleteFlowGroupById(id);
-        return this.successDelete();
+        flowGroupService.deleteFlowGroupById (id);
+        return this.successDelete ();
     }
 }

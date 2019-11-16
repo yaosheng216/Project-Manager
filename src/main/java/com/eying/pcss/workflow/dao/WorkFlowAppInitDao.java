@@ -11,11 +11,11 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 /**
  * 审批流程应用初始化数据表Dao类
  */
-public interface WorkFlowAppInitDao extends JpaRepository<WorkFlowAppInit,String>,
+public interface WorkFlowAppInitDao extends JpaRepository<WorkFlowAppInit, Long>,
         QuerydslPredicateExecutor<WorkFlowAppInit>, QuerydslBinderCustomizer<QWorkFlowAppInit> {
 
     @Override
-    default void customize(QuerydslBindings bindings, QWorkFlowAppInit root){
-        bindings.bind(String.class).first((StringPath path, String value) -> path.containsIgnoreCase(value));
+    default void customize(QuerydslBindings bindings, QWorkFlowAppInit root) {
+        bindings.bind (String.class).first ((StringPath path, String value) -> path.containsIgnoreCase (value));
     }
 }

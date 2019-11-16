@@ -11,11 +11,11 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 /**
  * 审批流程定义Dao类
  */
-public interface FlowDefinitionDao extends JpaRepository<FlowDefinition,String>,
+public interface FlowDefinitionDao extends JpaRepository<FlowDefinition, String>,
         QuerydslPredicateExecutor<FlowDefinition>, QuerydslBinderCustomizer<QFlowDefinition> {
 
     @Override
-    default void customize(QuerydslBindings bindings, QFlowDefinition root){
-        bindings.bind(String.class).first((StringPath path, String value) -> path.containsIgnoreCase(value));
+    default void customize(QuerydslBindings bindings, QFlowDefinition root) {
+        bindings.bind (String.class).first ((StringPath path, String value) -> path.containsIgnoreCase (value));
     }
 }

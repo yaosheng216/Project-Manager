@@ -19,7 +19,7 @@ public class FilterConfig {
 
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new MyHiddenHttpMethodFilter();
+        return new MyHiddenHttpMethodFilter ();
     }
 
     /**
@@ -29,13 +29,13 @@ public class FilterConfig {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                         FilterChain filterChain) throws ServletException, IOException {
-            if ("POST".equals(request.getMethod())
-                    && MediaType.APPLICATION_FORM_URLENCODED.equals(request.getContentType())){
+            if ("POST".equals (request.getMethod ())
+                    && MediaType.APPLICATION_FORM_URLENCODED.equals (request.getContentType ())) {
                 //Skip this filter and call the next filter in the chain.
-                filterChain.doFilter(request, response);
+                filterChain.doFilter (request, response);
             } else {
                 //Continue with processing this filter.
-                super.doFilterInternal(request, response, filterChain);
+                super.doFilterInternal (request, response, filterChain);
             }
         }
     }

@@ -41,16 +41,16 @@ public class FlowGroupService {
      * @param companyId
      */
     public String saveFlowGroup(String name, String companyId) {
-        FlowGroup flowGroup = new FlowGroup();
-        flowGroup.setCompanyId(companyId);
-        flowGroup.setName(name);
-        flowGroup.setIsBuildIn(false);
-        Predicate predicate = QFlowGroup.flowGroup.name.eq(name)
-                .and(QFlowGroup.flowGroup.companyId.eq(flowGroup.getCompanyId()));
-        if(flowGroupDao.findOne(predicate).isPresent()){
-            throw new ServiceException(GenExceptCode.Request_Param);
+        FlowGroup flowGroup = new FlowGroup ();
+        flowGroup.setCompanyId (companyId);
+        flowGroup.setName (name);
+        flowGroup.setIsBuildIn (false);
+        Predicate predicate = QFlowGroup.flowGroup.name.eq (name)
+                .and (QFlowGroup.flowGroup.companyId.eq (flowGroup.getCompanyId ()));
+        if (flowGroupDao.findOne (predicate).isPresent ()) {
+            throw new ServiceException (GenExceptCode.Request_Param);
         }
-        return flowGroupDao.save(flowGroup).getId();
+        return flowGroupDao.save (flowGroup).getId ().toString ();
     }
 
     /**
@@ -59,9 +59,9 @@ public class FlowGroupService {
      * @param id
      * @return
      */
-    public FlowGroup getFlowGroup(String id) {
-        Assert.hasText(id,GenExceptCode.Request_Param.getMsg());
-        return flowGroupDao.findById(id).orElse(null);
+    public FlowGroup getFlowGroup(Long id) {
+        Assert.hasText (id.toString (), GenExceptCode.Request_Param.getMsg ());
+        return flowGroupDao.findById (id).orElse (null);
     }
 
     /**
@@ -71,57 +71,59 @@ public class FlowGroupService {
      */
     public List<FlowGroup> findAll(String companyId) {
         Predicate predicate = null;
-        if(StringUtils.isNotBlank(companyId)){
-            predicate = QFlowGroup.flowGroup.companyId.eq(companyId);
+        if (StringUtils.isNotBlank (companyId)) {
+            predicate = QFlowGroup.flowGroup.companyId.eq (companyId);
         }
-        Pageable pageable = CommonUtil.buildPageable(0, Integer.MAX_VALUE, "isBuildIn|asc,createTime|asc");
+        Pageable pageable = CommonUtil.buildPageable (0, Integer.MAX_VALUE, "isBuildIn|asc,createTime|asc");
         if (predicate == null) {
-            return flowGroupDao.findAll(pageable).getContent();
+            return flowGroupDao.findAll (pageable).getContent ();
         }
-        return Lists.newArrayList(flowGroupDao.findAll(predicate,pageable).getContent());
+        return Lists.newArrayList (flowGroupDao.findAll (predicate, pageable).getContent ());
     }
 
     /**
      * 修改流程分组名称
+     *
      * @param id
      * @param name
      */
-    public void modifyGroupName(String id ,String name){
-        Assert.hasText(id,GenExceptCode.Request_Param.getMsg());
-        FlowGroup flowGroup =  flowGroupDao.findById(id).orElse(null);
-        if(flowGroup == null){
-            throw new ServiceException(GenExceptCode.Request_Param.name(),FlowGroup.class.getSimpleName());
+    public void modifyGroupName(Long id, String name) {
+        Assert.hasText (id.toString (), GenExceptCode.Request_Param.getMsg ());
+        FlowGroup flowGroup = flowGroupDao.findById (Long.valueOf (id)).orElse (null);
+        if (flowGroup == null) {
+            throw new ServiceException (GenExceptCode.Request_Param.name (), FlowGroup.class.getSimpleName ());
         }
-        Predicate predicate = QFlowGroup.flowGroup.name.eq(name).and(QFlowGroup.flowGroup.id.ne(id))
-                .and(QFlowGroup.flowGroup.companyId.eq(flowGroup.getCompanyId()));
-        if(flowGroupDao.findOne(predicate).isPresent()){
-            throw new ServiceException(GenExceptCode.Request_Param);
+        Predicate predicate = QFlowGroup.flowGroup.name.eq (name).and (QFlowGroup.flowGroup.id.ne (id))
+                .and (QFlowGroup.flowGroup.companyId.eq (flowGroup.getCompanyId ()));
+        if (flowGroupDao.findOne (predicate).isPresent ()) {
+            throw new ServiceException (GenExceptCode.Request_Param);
         }
-        flowGroup.setName(name);
-        flowGroupDao.save(flowGroup);
+        flowGroup.setName (name);
+        flowGroupDao.save (flowGroup);
     }
 
     /**
      * 删除流程分组，并将其下面的流程应用移动到其他分组中
+     *
      * @param id
      */
-    public void deleteFlowGroupById(String id) {
-        Assert.hasText(id,GenExceptCode.Request_Param.getMsg());
-        FlowGroup flowGroup =  flowGroupDao.findById(id).orElse(null);
-        if(flowGroup == null){
-            throw new ServiceException(GenExceptCode.Request_Param.name(),FlowGroup.class.getSimpleName());
+    public void deleteFlowGroupById(Long id) {
+        Assert.hasText (id.toString (), GenExceptCode.Request_Param.getMsg ());
+        FlowGroup flowGroup = flowGroupDao.findById (id).orElse (null);
+        if (flowGroup == null) {
+            throw new ServiceException (GenExceptCode.Request_Param.name (), FlowGroup.class.getSimpleName ());
         }
         // 删除分组下面的所有应用
-        Predicate predicate = QWorkFlowApp.workFlowApp.group.id.eq(id);
-        List<WorkFlowApp> apps = Lists.newArrayList(appDao.findAll(predicate));
-        Predicate otherPredicate = QFlowGroup.flowGroup.isBuildIn.isTrue()
-                .and(QFlowGroup.flowGroup.name.eq("其他"))
-                .and(QFlowGroup.flowGroup.companyId.eq(flowGroup.getCompanyId()));
-        FlowGroup group = flowGroupDao.findOne(otherPredicate).orElse(null);
-        for (WorkFlowApp app : apps){
-            app.setGroup(group);
+        Predicate predicate = QWorkFlowApp.workFlowApp.group.id.eq (id);
+        List<WorkFlowApp> apps = Lists.newArrayList (appDao.findAll (predicate));
+        Predicate otherPredicate = QFlowGroup.flowGroup.isBuildIn.isTrue ()
+                .and (QFlowGroup.flowGroup.name.eq ("其他"))
+                .and (QFlowGroup.flowGroup.companyId.eq (flowGroup.getCompanyId ()));
+        FlowGroup group = flowGroupDao.findOne (otherPredicate).orElse (null);
+        for (WorkFlowApp app : apps) {
+            app.setGroup (group);
         }
-        appDao.saveAll(apps);
-        flowGroupDao.delete(flowGroup);
+        appDao.saveAll (apps);
+        flowGroupDao.delete (flowGroup);
     }
 }

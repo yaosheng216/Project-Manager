@@ -23,15 +23,15 @@ public class FindStaffService {
 
     public Boolean findStaffIsExist(String staffId) {
         Response response = null;
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient ();
         try {
-            response = client.target(staffUrl).path(staffId).request().accept(MediaType.APPLICATION_JSON).get();
+            response = client.target (staffUrl).path (staffId).request ().accept (MediaType.APPLICATION_JSON).get ();
         } catch (Exception e) {
-            log.severe(e.getMessage());
+            log.severe (e.getMessage ());
             throw e;
         }
-        if (response.getStatus() == 200) {
-            Map<String, Object> map = response.readEntity(Map.class);
+        if (response.getStatus () == 200) {
+            Map<String, Object> map = response.readEntity (Map.class);
             if (map == null) {
                 return false;
             } else {

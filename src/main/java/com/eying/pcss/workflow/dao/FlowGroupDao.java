@@ -11,11 +11,11 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 /**
  * 审批流程分组Dao类
  */
-public interface FlowGroupDao extends JpaRepository<FlowGroup,String>,
+public interface FlowGroupDao extends JpaRepository<FlowGroup, Long>,
         QuerydslPredicateExecutor<FlowGroup>, QuerydslBinderCustomizer<QFlowGroup> {
 
     @Override
-    default void customize(QuerydslBindings bindings, QFlowGroup root){
-        bindings.bind(String.class).first((StringPath path, String value) -> path.containsIgnoreCase(value));
+    default void customize(QuerydslBindings bindings, QFlowGroup root) {
+        bindings.bind (String.class).first ((StringPath path, String value) -> path.containsIgnoreCase (value));
     }
 }

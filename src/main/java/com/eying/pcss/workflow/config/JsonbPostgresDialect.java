@@ -14,8 +14,8 @@ import java.sql.Types;
 public class JsonbPostgresDialect extends MySQL8Dialect {
 
     public JsonbPostgresDialect() {
-        super();
-        registerColumnType(Types.JAVA_OBJECT, "json");
-        registerHibernateType(Types.ARRAY, StringType.class.getName());
+        super ();
+        registerColumnType (Types.JAVA_OBJECT, "json");
+        registerHibernateType (Types.ARRAY, StringType.class.getName ());
     }
 }

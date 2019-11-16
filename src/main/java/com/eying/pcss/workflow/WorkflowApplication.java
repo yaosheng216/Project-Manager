@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
 public class WorkflowApplication {
     public static void main(String[] args) {
-        SpringApplication.run(WorkflowApplication.class, args);
+        SpringApplication.run (WorkflowApplication.class, args);
     }
+
 }

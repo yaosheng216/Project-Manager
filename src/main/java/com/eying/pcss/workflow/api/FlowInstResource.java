@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -40,7 +41,7 @@ public class FlowInstResource extends AbstractResource {
     public Response createInstance(
             FlowSheetBO sheet
     ) {
-        return this.successCreate(flowSheetService.createInstance(sheet));
+        return this.successCreate (flowSheetService.createInstance (sheet));
     }
 
     @POST
@@ -61,18 +62,18 @@ public class FlowInstResource extends AbstractResource {
             @QueryParam("size") int size,
             @QueryParam("order") String order
     ) {
-        Pageable pageable = CommonUtil.buildPageable(page, size, order);
-        return flowSheetService.getApplicantSheets(submitId, auditorId, queryType, copyUserId,
-                companyId, status, flowAppId, startTime, endTime, isFinished, pageable,order);
+        Pageable pageable = CommonUtil.buildPageable (page, size, order);
+        return flowSheetService.getApplicantSheets (submitId, auditorId, queryType, copyUserId,
+                companyId, status, flowAppId, startTime, endTime, isFinished, pageable, order);
     }
 
     @GET
     @Path("/getFlowSheet")
     @ApiOperation("查询流程实例详情")
     public FlowSheet getFlowSheet(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        return flowSheetService.getFlowSheetById(id);
+        return flowSheetService.getFlowSheetById (id);
     }
 
     @GET
@@ -80,13 +81,13 @@ public class FlowInstResource extends AbstractResource {
     @ApiOperation("审批通过")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response approve(
-            @QueryParam("id") String id,
+            @QueryParam("id") Long id,
             @QueryParam("auditorId") String auditorId,
             @QueryParam("auditorName") String auditorName,
             @QueryParam("comment") String comment
     ) {
-        flowSheetService.approve(id, auditorId,auditorName, comment);
-        return successUpdate();
+        flowSheetService.approve (id, auditorId, auditorName, comment);
+        return successUpdate ();
     }
 
     @GET
@@ -94,33 +95,33 @@ public class FlowInstResource extends AbstractResource {
     @ApiOperation("审批拒绝")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public Response reject(
-            @QueryParam("id") String id,
+            @QueryParam("id") Long id,
             @QueryParam("auditorId") String auditorId,
             @QueryParam("auditorName") String auditorName,
             @QueryParam("comment") String comment
     ) {
-        flowSheetService.reject(id, auditorId,auditorName, comment);
-        return successUpdate();
+        flowSheetService.reject (id, auditorId, auditorName, comment);
+        return successUpdate ();
     }
 
     @GET
     @Path("/cancel")
     @ApiOperation("审批撤销")
     public Response cancel(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        flowSheetService.cancel(id);
-        return successUpdate();
+        flowSheetService.cancel (id);
+        return successUpdate ();
     }
 
     @POST
     @Path("/reApply")
     @ApiOperation("重新申请")
     public Response reApply(
-            @QueryParam("id") String id,
+            @QueryParam("id") Long id,
             @NotNull FlowSheetBO sheet
     ) {
-        flowSheetService.reApply(id,sheet);
-        return successUpdate();
+        flowSheetService.reApply (id, sheet);
+        return successUpdate ();
     }
 }

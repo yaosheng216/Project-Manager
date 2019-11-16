@@ -8,15 +8,15 @@ import io.swagger.annotations.ApiModel;
 @ApiModel("FlowSheetStatus")
 public enum FlowSheetStatus {
 
-    Approved("审批通过"),
-    Cancel("撤销申请"),
-    Reject("审批拒绝"),
-    Approving("审批中");
+    Approved ("审批通过"),
+    Cancel ("撤销申请"),
+    Reject ("审批拒绝"),
+    Approving ("审批中");
 
     private String desc;
 
-    FlowSheetStatus(String _desc){
-        this.desc=_desc;
+    FlowSheetStatus(String _desc) {
+        this.desc = _desc;
     }
 
     public String getDesc() {

@@ -36,7 +36,7 @@ import java.util.List;
         @TypeDef(name = "JsonbTypeAuditor", typeClass = JsonbType.class, parameters = {
                 @Parameter(name = JsonbType.CLASS, value = "com.eying.pcss.workflow.dto.FlowPerson")})
 })
-public class FlowSheet extends IdEntity{
+public class FlowSheet extends IdEntity {
     @ApiModelProperty("所属企业")
     private String companyId;
     @ApiModelProperty("审批编号")
@@ -53,11 +53,11 @@ public class FlowSheet extends IdEntity{
     private LocalDateTime submitTime;
     @ApiModelProperty("申请数据")
     @Column(columnDefinition = "json")
-    @Type(type = "JsonbTypeSheetData")
+    @Type(type = "json")
     private List<SheetData> sheetData;
     @ApiModelProperty("审批日志")
     @Column(columnDefinition = "json")
-    @Type(type = "JsonbTypeAuditLog")
+    @Type(type = "json")
     private List<AuditLog> auditLogs;
     @ApiModelProperty("流程引擎流程实例ID(act_ru_task表中的proc_inst_id关联)")
     private String instanceId;
@@ -75,10 +75,10 @@ public class FlowSheet extends IdEntity{
     private FlowSheetStatus status;
     @ApiModelProperty("抄送人列表")
     @Column(columnDefinition = "json")
-    @Type(type = "JsonbTypeAuditor")
+    @Type(type = "json")
     private List<FlowPerson> copyPersons;
     @ApiModelProperty("自由流程审批人列表")
     @Column(columnDefinition = "json")
-    @Type(type = "JsonbTypeAuditor")
+    @Type(type = "json")
     private List<FlowPerson> auditPersons;
 }

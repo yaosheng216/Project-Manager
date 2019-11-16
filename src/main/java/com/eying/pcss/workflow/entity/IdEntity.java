@@ -6,10 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -18,13 +15,13 @@ import java.time.LocalDateTime;
 @Data
 @MappedSuperclass
 public abstract class IdEntity {
-//    @Id
+    //    @Id
 //    @GenericGenerator(name="idGenerator", strategy="uuid")
 //    @GeneratedValue(generator="idGenerator")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(length = 50)
-    private String id;
+    private Long id;
     @CreatedDate
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;

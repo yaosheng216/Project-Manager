@@ -32,9 +32,9 @@ public class FlowInitDataResource extends AbstractResource {
     @ApiOperation("初始化企业审批流程数据")
     public Response createGroup(
             @QueryParam("companyId") String companyId
-    ){
-        initDataService.initData(companyId);
-        return this.successCreate();
+    ) {
+        initDataService.initData (companyId);
+        return this.successCreate ();
     }
 
 }

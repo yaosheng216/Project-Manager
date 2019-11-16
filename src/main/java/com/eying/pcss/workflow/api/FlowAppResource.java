@@ -40,9 +40,9 @@ public class FlowAppResource extends AbstractResource {
     public List<WorkFlowApp> getApps(
             @QueryParam("companyId") String companyId,
             @QueryParam("name") String name,
-            @QueryParam("groupId") String groupId
+            @QueryParam("groupId") Long groupId
     ) {
-        return workFlowAppService.getApps(companyId, name,groupId);
+        return workFlowAppService.getApps (companyId, name, groupId);
     }
 
     @POST
@@ -51,89 +51,89 @@ public class FlowAppResource extends AbstractResource {
     public Response createGroupApp(
             @NotNull @Valid WorkFlowAppBO app
     ) {
-        return this.successCreate(workFlowAppService.createGroupApp(app));
+        return this.successCreate (workFlowAppService.createGroupApp (app));
     }
 
     @GET
     @Path("/getAppDetail")
     @ApiOperation("查询应用详情")
     public WorkFlowApp getApp(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        return workFlowAppService.getApp(id);
+        return workFlowAppService.getApp (id);
     }
 
     @POST
     @Path("/editApp")
     @ApiOperation("编辑应用")
     public Response editApp(
-            @QueryParam("id") String id,
+            @QueryParam("id") Long id,
             @NotNull WorkFlowAppBO app
     ) {
-        workFlowAppService.editApp(id,app);
-        return this.successUpdate();
+        workFlowAppService.editApp (id, app);
+        return this.successUpdate ();
     }
 
     @GET
     @Path("/deleteApp")
     @ApiOperation("删除应用")
     public Response deleteApp(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        workFlowAppService.deleteApp(id);
-        return this.successDelete();
+        workFlowAppService.deleteApp (id);
+        return this.successDelete ();
     }
 
     @GET
     @Path("/disableApp")
     @ApiOperation("停用应用")
     public Response disableApp(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        workFlowAppService.disableApp(id);
-        return this.successUpdate();
+        workFlowAppService.disableApp (id);
+        return this.successUpdate ();
     }
 
     @GET
     @Path("/enableApp")
     @ApiOperation("启用应用")
     public Response enableApp(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
-        workFlowAppService.enableApp(id);
-        return this.successUpdate();
+        workFlowAppService.enableApp (id);
+        return this.successUpdate ();
     }
 
     @POST
     @Path("/editForm")
     @ApiOperation("编辑应用表单")
     public Response editAppForm(
-            @QueryParam("id") String id,
+            @QueryParam("id") Long id,
             @NotNull List<FlowFormInput> inputs
     ) {
-        workFlowAppService.editAppForm(id,inputs);
-        return this.successUpdate();
+        workFlowAppService.editAppForm (id, inputs);
+        return this.successUpdate ();
     }
 
     @POST
     @Path("/editFlow")
     @ApiOperation("编辑应用流程")
     public Response editAppFlow(
-            @QueryParam("id") String id,
+            @QueryParam("id") Long id,
             @NotNull FlowDefinitionBO flow
     ) {
-        workFlowAppService.editAppFlow(id,flow);
-        return this.successUpdate();
+        workFlowAppService.editAppFlow (id, flow);
+        return this.successUpdate ();
     }
 
     @GET
     @Path("/publish")
     @ApiOperation("发布应用")
     public Response publish(
-            @QueryParam("id") String id
+            @QueryParam("id") Long id
     ) {
         // 需要做数据校验
-        workFlowAppService.publish(id);
-        return this.successUpdate();
+        workFlowAppService.publish (id);
+        return this.successUpdate ();
     }
 }

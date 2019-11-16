@@ -17,7 +17,7 @@ import javax.persistence.EntityListeners;
 @ApiModel("FlowGroupInit")
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class FlowGroupInit extends IdEntity{
+public class FlowGroupInit extends IdEntity {
     @ApiModelProperty("分组名称")
     private String name;
     @ApiModelProperty("是否内置")

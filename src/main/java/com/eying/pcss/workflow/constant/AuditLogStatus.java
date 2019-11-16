@@ -8,16 +8,16 @@ import io.swagger.annotations.ApiModel;
 @ApiModel("AuditLogStatus")
 public enum AuditLogStatus {
 
-    Apply("发起申请"),
-    Approved("已同意"),
-    Rejected("已拒绝"),
-    ReApply("重新申请"),
-    Canceled("已撤销");
+    Apply ("发起申请"),
+    Approved ("已同意"),
+    Rejected ("已拒绝"),
+    ReApply ("重新申请"),
+    Canceled ("已撤销");
 
     private String desc;
 
-    AuditLogStatus(String _desc){
-        this.desc=_desc;
+    AuditLogStatus(String _desc) {
+        this.desc = _desc;
     }
 
     public String getDesc() {

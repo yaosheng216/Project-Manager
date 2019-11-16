@@ -21,19 +21,18 @@ public class FindRolesService {
     @Value("${rest.company.roles}")
     private String companyUrl;
 
-
     public List<Map<String, Object>> findCompanyIsExist(String rolesId) {
         Response response = null;
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient ();
         companyUrl = companyUrl + "/" + rolesId + "/staffs";
         try {
-            response = client.target(companyUrl).request().accept(MediaType.APPLICATION_JSON).get();
+            response = client.target (companyUrl).request ().accept (MediaType.APPLICATION_JSON).get ();
         } catch (Exception e) {
-            log.severe(e.getMessage());
+            log.severe (e.getMessage ());
             throw e;
         }
-        if (response.getStatus() == 200) {
-            List<Map<String, Object>> list = response.readEntity(List.class);
+        if (response.getStatus () == 200) {
+            List<Map<String, Object>> list = response.readEntity (List.class);
             if (list == null) {
                 return null;
             } else {

@@ -8,13 +8,13 @@ import io.swagger.annotations.ApiModel;
 @ApiModel("AuditType")
 public enum AuditType {
 
-    And("会签"),
-    Or("或签");
+    And ("会签"),
+    Or ("或签");
 
     private String desc;
 
-    AuditType(String _desc){
-        this.desc=_desc;
+    AuditType(String _desc) {
+        this.desc = _desc;
     }
 
     public String getDesc() {

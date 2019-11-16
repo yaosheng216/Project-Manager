@@ -24,35 +24,34 @@ public class JerseyConfig extends ResourceConfig {
     private String apiPath;
 
     public JerseyConfig() {
-        register(LoggingFeature.class);
+        register (LoggingFeature.class);
         //定义包含接口定义的包
-        packages("com.eying.pcss");
+        packages ("com.eying.pcss");
         //支持文件上传
-        register(MultiPartFeature.class);
+        register (MultiPartFeature.class);
         //jwt信息处理
-        register(JwtFilter.class);
-        register(Array.class);
+        register (JwtFilter.class);
+        register (Array.class);
     }
 
     @PostConstruct
     public void init() {
-        this.configureSwagger();
+        this.configureSwagger ();
     }
-
 
     private void configureSwagger() {
         // Available at localhost:port/swagger.json
-        this.register(ApiListingResource.class);
-        this.register(SwaggerSerializers.class);
-        BeanConfig config = new BeanConfig();
-        config.setConfigId("pcss-workflow");
-        config.setTitle("企业审批流程管理");
-        config.setVersion("v1");
-        config.setContact("zhangyunyan");
-        config.setSchemes(new String[] { "http"});
-        config.setBasePath(apiPath);
-        config.setResourcePackage("com.eying.pcss");
-        config.setPrettyPrint(true);
-        config.setScan(true);
+        this.register (ApiListingResource.class);
+        this.register (SwaggerSerializers.class);
+        BeanConfig config = new BeanConfig ();
+        config.setConfigId ("pcss-workflow");
+        config.setTitle ("企业审批流程管理");
+        config.setVersion ("v1");
+        config.setContact ("zhangyunyan");
+        config.setSchemes (new String[]{"http"});
+        config.setBasePath (apiPath);
+        config.setResourcePackage ("com.eying.pcss");
+        config.setPrettyPrint (true);
+        config.setScan (true);
     }
 }

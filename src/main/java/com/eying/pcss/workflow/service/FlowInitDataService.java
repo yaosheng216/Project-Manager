@@ -37,33 +37,33 @@ public class FlowInitDataService {
      * @param companyId 企业id
      */
     public void initData(String companyId) {
-        List<WorkFlowAppInit> appInitList = appInitDao.findAll();
-        List<FlowGroupInit> groupInitList = groupInitDao.findAll();
-        Map<String,FlowGroup> groupMap = new HashMap<>();
-        for (FlowGroupInit groupInit : groupInitList){
-            FlowGroup group = new FlowGroup();
-            CopyUtil.copyNotNullProperties(groupInit, group);
-            group.setCompanyId(companyId);
+        List<WorkFlowAppInit> appInitList = appInitDao.findAll ();
+        List<FlowGroupInit> groupInitList = groupInitDao.findAll ();
+        Map<String, FlowGroup> groupMap = new HashMap<> ();
+        for (FlowGroupInit groupInit : groupInitList) {
+            FlowGroup group = new FlowGroup ();
+            CopyUtil.copyNotNullProperties (groupInit, group);
+            group.setCompanyId (companyId);
 //            group.setId(null);
-            groupDao.save(group);
-            groupMap.put(groupInit.getName(), group);
+            groupDao.save (group);
+            groupMap.put (groupInit.getName (), group);
         }
-        List<WorkFlowApp> apps = new ArrayList<>();
-        for (WorkFlowAppInit appInit : appInitList){
-            WorkFlowApp workFlowApp = new WorkFlowApp();
-            CopyUtil.copyNotNullProperties(appInit, workFlowApp);
-            workFlowApp.setCompanyId(companyId);
-            FlowDefinition definition = new FlowDefinition();
-            definition.setCompanyId(companyId);
-            definition.setIsFree(true);
-            flowDefinitionDao.save(definition);
-            workFlowApp.setFlowDefinition(definition);
+        List<WorkFlowApp> apps = new ArrayList<> ();
+        for (WorkFlowAppInit appInit : appInitList) {
+            WorkFlowApp workFlowApp = new WorkFlowApp ();
+            CopyUtil.copyNotNullProperties (appInit, workFlowApp);
+            workFlowApp.setCompanyId (companyId);
+            FlowDefinition definition = new FlowDefinition ();
+            definition.setCompanyId (companyId);
+            definition.setIsFree (true);
+            flowDefinitionDao.save (definition);
+            workFlowApp.setFlowDefinition (definition);
 
-            FlowGroupInit groupInit = appInit.getGroup();
-            workFlowApp.setGroup(groupMap.get(groupInit.getName()));
-            apps.add(workFlowApp);
+            FlowGroupInit groupInit = appInit.getGroup ();
+            workFlowApp.setGroup (groupMap.get (groupInit.getName ()));
+            apps.add (workFlowApp);
         }
-        workFlowAppDao.saveAll(apps);
+        workFlowAppDao.saveAll (apps);
     }
 
 }

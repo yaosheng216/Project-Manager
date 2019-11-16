@@ -8,14 +8,14 @@ import io.swagger.annotations.ApiModel;
 @ApiModel("QueryType")
 public enum QueryType {
 
-    All("全部"),
-    Pending("待审批"),
-    Already("已审批");
+    All ("全部"),
+    Pending ("待审批"),
+    Already ("已审批");
 
     private String desc;
 
-    QueryType(String _desc){
-        this.desc=_desc;
+    QueryType(String _desc) {
+        this.desc = _desc;
     }
 
     public String getDesc() {

@@ -48,27 +48,27 @@ public class FileService {
      * @param fileType 文件后缀类型
      * @return 返回正式目录的key（路径+文件名）
      */
-    public String copyAttachment(String uri, String destPath,String fileType) {
+    public String copyAttachment(String uri, String destPath, String fileType) {
         // 如果uri是临时访问地址，则需要截取一下
-        String url = CommonUtil.subFileUrl(uri);
-        OSSClient client = OssFileUtil.getOSSClient(endpoint, accessKeyId, accessKeySecret);
+        String url = CommonUtil.subFileUrl (uri);
+        OSSClient client = OssFileUtil.getOSSClient (endpoint, accessKeyId, accessKeySecret);
         //处理路径
-        destPath = destPath.endsWith("/") ? destPath : destPath + "/";
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
+        destPath = destPath.endsWith ("/") ? destPath : destPath + "/";
+        String fileName = url.substring (url.lastIndexOf ("/") + 1);
         // 文件后缀
-        if(StringUtils.isBlank(fileType)){
-            OSSClient client1 = OssFileUtil.getOSSClient(endpoint, accessKeyId, accessKeySecret);
-            ObjectMetadata metadata = OssFileUtil.getObjectMetadata(client1, bucketName, url);
-            fileType = MimeTypeEnum.getExtByCode(metadata.getContentType());
-        }else{
-            fileType = fileType.startsWith(".") ? fileType : "." + fileType;
+        if (StringUtils.isBlank (fileType)) {
+            OSSClient client1 = OssFileUtil.getOSSClient (endpoint, accessKeyId, accessKeySecret);
+            ObjectMetadata metadata = OssFileUtil.getObjectMetadata (client1, bucketName, url);
+            fileType = MimeTypeEnum.getExtByCode (metadata.getContentType ());
+        } else {
+            fileType = fileType.startsWith (".") ? fileType : "." + fileType;
         }
         // 正式目录的key
         String destKey = destPath + fileName;
-        if(!fileName.contains(".")){
+        if (!fileName.contains (".")) {
             destKey += fileType;
         }
-        OssFileUtil.copyObject(client, bucketName, bucketName, url, destKey);
+        OssFileUtil.copyObject (client, bucketName, bucketName, url, destKey);
         return destKey;
     }
 
@@ -81,23 +81,24 @@ public class FileService {
      */
     public String copyAvatar(String uri, String destPath) {
         // 如果uri是临时访问地址，则需要截取一下
-        String url = CommonUtil.subFileUrl(uri);
+        String url = CommonUtil.subFileUrl (uri);
         //需要将头像移到正式的bucket中
-        String host = "https://" + avatarBucketName + "." + endpoint.replace("http://", "").replace("https://", "");
-        OSSClient client = OssFileUtil.getOSSClient(endpoint, accessKeyId, accessKeySecret);
+        String host = "https://" + avatarBucketName + "." + endpoint.replace ("http://", "").replace ("https://", "");
+        OSSClient client = OssFileUtil.getOSSClient (endpoint, accessKeyId, accessKeySecret);
         //处理路径
-        destPath = destPath.endsWith("/") ? destPath : destPath + "/";
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
+        destPath = destPath.endsWith ("/") ? destPath : destPath + "/";
+        String fileName = url.substring (url.lastIndexOf ("/") + 1);
         // 文件后缀
-        OSSClient client1 = OssFileUtil.getOSSClient(endpoint, accessKeyId, accessKeySecret);
-        ObjectMetadata metadata = OssFileUtil.getObjectMetadata(client1, bucketName, url);
-        String fileType = MimeTypeEnum.getExtByCode(metadata.getContentType());
+        OSSClient client1 = OssFileUtil.getOSSClient (endpoint, accessKeyId, accessKeySecret);
+        ObjectMetadata metadata = OssFileUtil.getObjectMetadata (client1, bucketName, url);
+        String fileType = MimeTypeEnum.getExtByCode (metadata.getContentType ());
         // 正式目录的key
         String destKey = destPath + fileName;
-        if(!fileName.contains(".")){
+        if (!fileName.contains (".")) {
             destKey += fileType;
         }
-        OssFileUtil.copyObject(client, bucketName, avatarBucketName, url, destKey);
-        return  host + "/" + destKey;
+        OssFileUtil.copyObject (client, bucketName, avatarBucketName, url, destKey);
+        return host + "/" + destKey;
     }
+
 }

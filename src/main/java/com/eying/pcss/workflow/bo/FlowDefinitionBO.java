@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @ApiModel("FlowDefinitionBO")
-public class FlowDefinitionBO{
+public class FlowDefinitionBO {
     @ApiModelProperty("是否自由流程")
     private Boolean isFree;
     @NotNull

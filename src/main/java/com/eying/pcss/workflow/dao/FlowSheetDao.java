@@ -11,12 +11,12 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 /**
  * 自定义审批单Dao类
  */
-public interface FlowSheetDao extends JpaRepository<FlowSheet,String>,
+public interface FlowSheetDao extends JpaRepository<FlowSheet, Long>,
         QuerydslPredicateExecutor<FlowSheet>, QuerydslBinderCustomizer<QFlowSheet> {
 
     @Override
-    default void customize(QuerydslBindings bindings, QFlowSheet root){
-        bindings.bind(String.class).first((StringPath path, String value) -> path.containsIgnoreCase(value));
+    default void customize(QuerydslBindings bindings, QFlowSheet root) {
+        bindings.bind (String.class).first ((StringPath path, String value) -> path.containsIgnoreCase (value));
     }
 
 }

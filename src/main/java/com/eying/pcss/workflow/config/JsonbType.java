@@ -34,42 +34,42 @@ import java.util.regex.Pattern;
  */
 public class JsonbType implements UserType, ParameterizedType {
 
-    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule())
+    private final ObjectMapper mapper = new ObjectMapper ().registerModule (new JavaTimeModule ())
             // 处理java8 Date/Time类型问题
-            .disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
+            .disable (SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
             // 反序列化的时候如果多了其他属性,不抛出异常
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            .disable (DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
-    private static final ClassLoaderService CLASS_LOADER_SERVICE = new ClassLoaderServiceImpl();
+    private static final ClassLoaderService CLASS_LOADER_SERVICE = new ClassLoaderServiceImpl ();
 
     public static final String CLASS = "CLASS";
 
     private Class<?> jsonClassType;
 
-    private String listEntity(String value){
-        String regex="\\[\\{(.*?)}]";
-        Pattern p=Pattern.compile(regex);
-        Matcher m=p.matcher(value);
-        StringBuilder sb = new StringBuilder();
-        String[] a = value.split("\\[\\{");
-        List<String> stringList = new ArrayList<>();
-        while(m.find()){
-            String str1 = m.group(1).replace("},","####-1-2-####,");
-            stringList.add(str1);
+    private String listEntity(String value) {
+        String regex = "\\[\\{(.*?)}]";
+        Pattern p = Pattern.compile (regex);
+        Matcher m = p.matcher (value);
+        StringBuilder sb = new StringBuilder ();
+        String[] a = value.split ("\\[\\{");
+        List<String> stringList = new ArrayList<> ();
+        while (m.find ()) {
+            String str1 = m.group (1).replace ("},", "####-1-2-####,");
+            stringList.add (str1);
         }
-        int i=0;
-        for(String a1 : a){
-            if(a1.contains("}]")){
-                sb.append("[{");
-                sb.append(stringList.get(i));
-                sb.append("}]");
-                sb.append(a1.split("}]")[1]);
+        int i = 0;
+        for (String a1 : a) {
+            if (a1.contains ("}]")) {
+                sb.append ("[{");
+                sb.append (stringList.get (i));
+                sb.append ("}]");
+                sb.append (a1.split ("}]")[1]);
                 i++;
-            }else {
-                sb.append(a1);
+            } else {
+                sb.append (a1);
             }
         }
-        return sb.toString();
+        return sb.toString ();
     }
 
     /**
@@ -87,7 +87,7 @@ public class JsonbType implements UserType, ParameterizedType {
                               SharedSessionContractImplementor session, Object object) throws HibernateException, SQLException {
 //        PGobject oo = (PGobject) resultSet.getObject(strings[0]);
         //此处直接转换成字符串即可
-        String value = String.valueOf(resultSet.getObject(strings[0]));
+        String value = String.valueOf (resultSet.getObject (strings[0]));
         if (value == null) {
             return null;
         }
@@ -95,35 +95,35 @@ public class JsonbType implements UserType, ParameterizedType {
         if (value != null) {
             try {
                 // 判断是否是数组json串
-                if (value.startsWith("[") && value.endsWith("]")) {
-                    List<Object> objectList = new ArrayList<>();
+                if (value.startsWith ("[") && value.endsWith ("]")) {
+                    List<Object> objectList = new ArrayList<> ();
                     // 去除[和]
-                    String subValue = value.substring(1, value.length() - 1);
+                    String subValue = value.substring (1, value.length () - 1);
                     // 判断是否是空数组
-                    if (StringUtils.isNotBlank(subValue)) {
+                    if (StringUtils.isNotBlank (subValue)) {
                         // 如果以{开始，以}结尾，则表示是对象数组
-                        if (subValue.startsWith("{") && subValue.endsWith("}")) {
-                            String objectStr =listEntity(subValue.substring(0, subValue.length() - 1));
+                        if (subValue.startsWith ("{") && subValue.endsWith ("}")) {
+                            String objectStr = listEntity (subValue.substring (0, subValue.length () - 1));
                             // 分隔对象
-                            String[] values = objectStr.split("},");
+                            String[] values = objectStr.split ("},");
                             for (String v : values) {
-                                v = v.replace("####-1-2-####","}");
-                                objectList.add(mapper.readValue(v + "}", jsonClassType));
+                                v = v.replace ("####-1-2-####", "}");
+                                objectList.add (mapper.readValue (v + "}", jsonClassType));
                             }
                         } else {
                             // 字符串或者数字数组
-                            String[] values = subValue.split(",");
+                            String[] values = subValue.split (",");
                             for (String v : values) {
-                                objectList.add(mapper.readValue(v, jsonClassType));
+                                objectList.add (mapper.readValue (v, jsonClassType));
                             }
                         }
                     }
                     return objectList;
                 } else {
-                    return mapper.readValue(value, jsonClassType);
+                    return mapper.readValue (value, jsonClassType);
                 }
             } catch (IOException e) {
-                throw new SystemException(e);
+                throw new SystemException (e);
             }
         }
         return null;
@@ -143,12 +143,12 @@ public class JsonbType implements UserType, ParameterizedType {
     public void nullSafeSet(PreparedStatement preparedStatement, Object object, int index,
                             SharedSessionContractImplementor session) throws HibernateException, SQLException {
         if (object == null) {
-            preparedStatement.setNull(index, Types.OTHER);
+            preparedStatement.setNull (index, Types.OTHER);
         } else {
             try {
-                preparedStatement.setObject(index, mapper.writeValueAsString(object), Types.OTHER);
+                preparedStatement.setObject (index, mapper.writeValueAsString (object), Types.OTHER);
             } catch (IOException e) {
-                throw new SystemException(e);
+                throw new SystemException (e);
             }
         }
     }
@@ -168,14 +168,14 @@ public class JsonbType implements UserType, ParameterizedType {
             try {
                 // 如果Object是List，则需要转换成json数组
                 if (originalValue instanceof List) {
-                    String content = mapper.writeValueAsString(originalValue);
-                    return mapper.readValue(content, new TypeReference<List<Object>>() {
+                    String content = mapper.writeValueAsString (originalValue);
+                    return mapper.readValue (content, new TypeReference<List<Object>> () {
                     });
                 } else {
-                    return mapper.readValue(mapper.writeValueAsString(originalValue), returnedClass());
+                    return mapper.readValue (mapper.writeValueAsString (originalValue), returnedClass ());
                 }
             } catch (IOException e) {
-                throw new SystemException(e);
+                throw new SystemException (e);
             }
         }
         return null;
@@ -192,14 +192,14 @@ public class JsonbType implements UserType, ParameterizedType {
      */
     @Override
     public Serializable disassemble(Object value) throws HibernateException {
-        Object copy = deepCopy(value);
+        Object copy = deepCopy (value);
 
         if (copy instanceof Serializable) {
             return (Serializable) copy;
         }
 
-        throw new SerializationException(
-                String.format("Cannot serialize '%s', %s is not Serializable.", value, value.getClass()), null);
+        throw new SerializationException (
+                String.format ("Cannot serialize '%s', %s is not Serializable.", value, value.getClass ()), null);
     }
 
     /**
@@ -213,7 +213,7 @@ public class JsonbType implements UserType, ParameterizedType {
      */
     @Override
     public Object assemble(Serializable cached, Object owner) throws HibernateException {
-        return deepCopy(cached);
+        return deepCopy (cached);
     }
 
     /**
@@ -229,7 +229,7 @@ public class JsonbType implements UserType, ParameterizedType {
      */
     @Override
     public Object replace(Object original, Object target, Object owner) throws HibernateException {
-        return deepCopy(original);
+        return deepCopy (original);
     }
 
     /**
@@ -248,13 +248,13 @@ public class JsonbType implements UserType, ParameterizedType {
             return 0;
         }
 
-        return x.hashCode();
+        return x.hashCode ();
     }
 
 
     @Override
     public boolean equals(Object x, Object y) throws HibernateException {
-        return ObjectUtils.nullSafeEquals(x, y);
+        return ObjectUtils.nullSafeEquals (x, y);
     }
 
     /**
@@ -281,7 +281,7 @@ public class JsonbType implements UserType, ParameterizedType {
 
     @Override
     public void setParameterValues(Properties parameters) {
-        final String clazz = (String) parameters.get(CLASS);
-        jsonClassType = CLASS_LOADER_SERVICE.classForName(clazz);
+        final String clazz = (String) parameters.get (CLASS);
+        jsonClassType = CLASS_LOADER_SERVICE.classForName (clazz);
     }
 }

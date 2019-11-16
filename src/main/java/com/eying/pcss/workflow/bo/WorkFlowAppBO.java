@@ -17,7 +17,7 @@ import java.util.List;
 @ApiModel("WorkFlowAppBO")
 public class WorkFlowAppBO {
     @ApiModelProperty("流程应用ID")
-    private String id;
+    private Long id;
     @NotBlank
     @ApiModelProperty("所属企业")
     private String companyId;

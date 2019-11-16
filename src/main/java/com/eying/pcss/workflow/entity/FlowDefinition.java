@@ -24,7 +24,7 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @TypeDef(name = "json", typeClass = JsonStringType.class)
-public class FlowDefinition extends IdEntity{
+public class FlowDefinition extends IdEntity {
     @ApiModelProperty("企业ID")
     private String companyId;
     @ApiModelProperty("是否自由流程")
